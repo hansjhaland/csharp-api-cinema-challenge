@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using api_cinema_challenge.Data;
 using api_cinema_challenge.DTOs;
-using System.Threading.Tasks;
 using api_cinema_challenge.Models;
 
 namespace api_cinema_challenge.Repository
@@ -15,15 +14,23 @@ namespace api_cinema_challenge.Repository
             _databaseContext = db;
         }
 
-        public async Task<Customers> CreateCustomer(CustomersPost customer)
+        public async Task<Customer> CreateCustomer(CustomerPost customer)
         {
-            var newCustomer = new Customers() { Name = customer.Name, Email = customer.Email, Phone = customer.Phone, CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow };
+            var newCustomer = new Customer() { Name = customer.Name, Email = customer.Email, Phone = customer.Phone, CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow };
             await _databaseContext.Customers.AddAsync(newCustomer);
             await _databaseContext.SaveChangesAsync();
             return newCustomer;
         }
 
-        public async Task<Customers> DeleteCustomer(int id)
+        public async Task<Movie> CreateMovie(MoviePost movie)
+        {
+            var newMovie = MovieFactory.NewMovie(movie);
+            await _databaseContext.Movies.AddAsync(newMovie);
+            await _databaseContext.SaveChangesAsync();
+            return newMovie;
+        }
+
+        public async Task<Customer> DeleteCustomer(int id)
         {
             var customer = await _databaseContext.Customers.Where(x => x.Id == id).FirstOrDefaultAsync();
             if (customer == null) return null;
@@ -32,12 +39,26 @@ namespace api_cinema_challenge.Repository
             return customer;
         }
 
-        public async Task<IEnumerable<Customers>> GetCustomers()
+        public async Task<Movie> DeleteMovie(int id)
+        {
+            var movie = await _databaseContext.Movies.Where(x => x.Id == id).FirstOrDefaultAsync();
+            if (movie == null) return null;
+            _databaseContext.Movies.Remove(movie);
+            await _databaseContext.SaveChangesAsync();
+            return movie;
+        }
+
+        public async Task<IEnumerable<Customer>> GetCustomers()
         {
             return await _databaseContext.Customers.ToListAsync();
         }
 
-        public async Task<Customers> UpdateCustomer(int id, CustomerPut customerPut)
+        public async Task<IEnumerable<Movie>> GetMovies()
+        {
+            return await _databaseContext.Movies.ToListAsync();
+        }
+
+        public async Task<Customer> UpdateCustomer(int id, CustomerPut customerPut)
         {
             var customer = await _databaseContext.Customers.Where(c => c.Id == id).FirstOrDefaultAsync();
             if (customer == null) return null;
@@ -48,6 +69,19 @@ namespace api_cinema_challenge.Repository
             await _databaseContext.SaveChangesAsync();
             return customer;
             
+        }
+
+        public async Task<Movie> UpdateMovie(int id, MoviePut moviePut)
+        {
+            var movie = await _databaseContext.Movies.Where(m => m.Id == id).FirstOrDefaultAsync();
+            if (movie == null) return null;
+            if (movie.Title is not null) movie.Title = moviePut.Title;
+            if (movie.Rating is not null) movie.Rating = moviePut.Rating;
+            if (movie.Description is not null) movie.Description = moviePut.Description;
+            if (movie.RuntimeMins != 0 && movie.RuntimeMins != moviePut.RuntimeMins) movie.RuntimeMins = moviePut.RuntimeMins;
+            movie.UpdatedAt = DateTime.UtcNow;
+            await _databaseContext.SaveChangesAsync();
+            return movie;
         }
     }
 }

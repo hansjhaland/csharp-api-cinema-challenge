@@ -21,13 +21,20 @@ namespace api_cinema_challenge.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            List<Customers> customers = new List<Customers>();
-            customers.Add(new Customers { Id = 1, Name = "Nigel", Email = "nigel@nigel.nigel", Phone = "+44729388192", CreatedAt = new DateTime(2025, 08, 25, 10, 00, 00, 00, DateTimeKind.Utc), UpdatedAt = new DateTime(2025, 08, 25, 10, 00, 00, 00, DateTimeKind.Utc) });
-            customers.Add(new Customers { Id = 2, Name = "Dave", Email = "dave@dave.dave", Phone = "+44729388180", CreatedAt = new DateTime(2025, 08, 25, 10, 00, 00, 00, DateTimeKind.Utc), UpdatedAt = new DateTime(2025, 08, 25, 10, 00, 00, 00, DateTimeKind.Utc) });
-            customers.Add(new Customers { Id = 3, Name = "Walter", Email = "walter@white.bb", Phone = "+44729383492", CreatedAt = new DateTime(2025, 08, 25, 10, 00, 00, 00, DateTimeKind.Utc), UpdatedAt = new DateTime(2025, 08, 25, 10, 00, 00, 00, DateTimeKind.Utc) });
-            modelBuilder.Entity<Customers>().HasData(customers);
+            List<Customer> customers = new List<Customer>();
+            customers.Add(new Customer { Id = 1, Name = "Nigel", Email = "nigel@nigel.nigel", Phone = "+44729388192", CreatedAt = new DateTime(2025, 08, 25, 10, 00, 00, 00, DateTimeKind.Utc), UpdatedAt = new DateTime(2025, 08, 25, 10, 00, 00, 00, DateTimeKind.Utc) });
+            customers.Add(new Customer { Id = 2, Name = "Dave", Email = "dave@dave.dave", Phone = "+44729388180", CreatedAt = new DateTime(2025, 08, 25, 10, 00, 00, 00, DateTimeKind.Utc), UpdatedAt = new DateTime(2025, 08, 25, 10, 00, 00, 00, DateTimeKind.Utc) });
+            customers.Add(new Customer { Id = 3, Name = "Walter", Email = "walter@white.bb", Phone = "+44729383492", CreatedAt = new DateTime(2025, 08, 25, 10, 00, 00, 00, DateTimeKind.Utc), UpdatedAt = new DateTime(2025, 08, 25, 10, 00, 00, 00, DateTimeKind.Utc) });
+            modelBuilder.Entity<Customer>().HasData(customers);
+
+            List<Movie> movies = new List<Movie>();
+            movies.Add(new Movie {Id = 1, Title = "Dodgeball", Rating = "PG-13", Description = "Dodge this", RuntimeMins = 126, CreatedAt = new DateTime(2025, 08, 25, 10, 00, 00, 00, DateTimeKind.Utc), UpdatedAt = new DateTime(2025, 08, 25, 10, 00, 00, 00, DateTimeKind.Utc) });
+            movies.Add(new Movie {Id = 2, Title = "Dune: Part 3", Rating = "PG-100", Description = "Spice", RuntimeMins = 158, CreatedAt = new DateTime(2025, 08, 25, 10, 00, 00, 00, DateTimeKind.Utc), UpdatedAt = new DateTime(2025, 08, 25, 10, 00, 00, 00, DateTimeKind.Utc) });
+            movies.Add(new Movie { Id = 3, Title = "Return of the King", Rating = "PG-18", Description = "Epic", RuntimeMins = 240, CreatedAt = new DateTime(2025, 08, 25, 10, 00, 00, 00, DateTimeKind.Utc), UpdatedAt = new DateTime(2025, 08, 25, 10, 00, 00, 00, DateTimeKind.Utc) });
+            modelBuilder.Entity<Movie>().HasData(movies);
         }
 
-        public DbSet<Customers> Customers { get; set; }
+        public DbSet<Customer> Customers { get; set; }
+        public DbSet<Movie> Movies { get; set; }
     }
 }

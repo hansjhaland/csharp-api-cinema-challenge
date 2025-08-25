@@ -1,4 +1,5 @@
 ﻿using api_cinema_challenge.DTOs;
+using api_cinema_challenge.Models;
 using api_cinema_challenge.Repository;
 using Microsoft.AspNetCore.DataProtection.Repositories;
 using System.Runtime.CompilerServices;
@@ -14,16 +15,47 @@ namespace api_cinema_challenge.Endpoints
             app.MapPut("/customers/{id}", UpdateCustomer);
             app.MapDelete("/customers/{id}", DeleteCustomer);
 
-            //app.MapGet("/movies");
-            //app.MapPost("/movies");
-            //app.MapPut("/movies");
-            //app.MapDelete("/movies");
+            app.MapGet("/movies", GetMovies);
+            app.MapPost("/movies", CreateMovie);
+            app.MapPut("/movies/{id}", UpdateMovie);
+            app.MapDelete("/movies/{id}", DeleteMovie);
 
             //app.MapGet("/movies/{id}/screenings");
             //app.MapPost("/movies/{id}/screenings");
             //app.MapPut("/movies/{id}/screenings");
             //app.MapDelete("/movies/{id}/screenings");
 
+        }
+
+        private static async Task<IResult> DeleteMovie(IRepository repository, int id)
+        {
+            var entity = await repository.DeleteMovie(id);
+            return TypedResults.Ok(entity);
+        }
+
+        private static async Task<IResult> UpdateMovie(IRepository repository, int id, MoviePut movie)
+        {
+            var entity = await repository.UpdateMovie(id, movie);
+            return TypedResults.Created($"/customers/{id}", entity);
+        }
+
+        private static async Task<IResult> CreateMovie(IRepository repository, MoviePost movie)
+        {
+            var entity = await repository.CreateMovie(movie);
+            if (entity == null) return TypedResults.BadRequest();
+            MovieGet result = MovieFactory.NewMovieGet(entity);
+            return TypedResults.Created($"/movies/{entity.Id}", result);
+        }
+
+        private static async Task<IResult> GetMovies(IRepository repository)
+        {
+            var response = await repository.GetMovies();
+            List<MovieGet> results = new List<MovieGet>();
+            foreach (var item in response)
+            {
+                results.Add(MovieFactory.NewMovieGet(item));
+            }
+            return TypedResults.Ok(results);
         }
 
         private static async Task<IResult> DeleteCustomer(IRepository repository, int id)
@@ -38,11 +70,11 @@ namespace api_cinema_challenge.Endpoints
             return TypedResults.Created($"/customers/{id}", entity);
         }
 
-        private static async Task<IResult> CreateCustomer(IRepository repository, CustomersPost customer)
+        private static async Task<IResult> CreateCustomer(IRepository repository, CustomerPost customer)
         {
             var entity = await repository.CreateCustomer(customer);
             if (entity == null) return TypedResults.BadRequest();
-            CustomersGet result = new CustomersGet()
+            CustomerGet result = new CustomerGet()
             {
                 Id = entity.Id,
                 Name = entity.Name,
@@ -57,10 +89,10 @@ namespace api_cinema_challenge.Endpoints
         private static async Task<IResult> GetCustomers(IRepository repository)
         {
             var response = await repository.GetCustomers();
-            List<CustomersGet> results = new List<CustomersGet>();
+            List<CustomerGet> results = new List<CustomerGet>();
             foreach (var item in response)
             {
-                CustomersGet customer = new CustomersGet();
+                CustomerGet customer = new CustomerGet();
                 customer.Id = item.Id;
                 customer.Name = item.Name;
                 customer.Email = item.Email;

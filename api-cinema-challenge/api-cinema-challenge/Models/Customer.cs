@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace api_cinema_challenge.Models
 {
     [Table("customers")]
-    public class Customers
+    public class Customer
     {
         [Key]
         public int Id { get; set; }
