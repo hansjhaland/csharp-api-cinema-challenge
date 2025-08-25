@@ -57,21 +57,19 @@ namespace api_cinema_challenge.Endpoints
         private static async Task<IResult> GetCustomers(IRepository repository)
         {
             var response = await repository.GetCustomers();
-            //List<CustomersGet> results = new List<CustomersGet>();
-            //foreach (var item in response)
-            //{
-            //    CustomersGet customer = new CustomersGet();
-            //    customer.Id = item.Id;
-            //    customer.Name = item.Name;
-            //    customer.Email = item.Email;
-            //    customer.Phone = item.Phone;
-            //    customer.CreatedAt = item.CreatedAt;
-            //    customer.UpdatedAt = item.UpdatedAt;
-            //    results.Add(customer);
-            //    //results.Add(new CustomersGet() { Id = item.Id, Name = item.Name, Email = item.Email, Phone = item.Phone, CreatedAt = item.CreatedAt, UpdatedAt = item.UpdatedAt });
-            //}
-            //return TypedResults.Ok(results);
-            return TypedResults.Ok(response);
+            List<CustomersGet> results = new List<CustomersGet>();
+            foreach (var item in response)
+            {
+                CustomersGet customer = new CustomersGet();
+                customer.Id = item.Id;
+                customer.Name = item.Name;
+                customer.Email = item.Email;
+                customer.Phone = item.Phone;
+                customer.CreatedAt = item.CreatedAt;
+                customer.UpdatedAt = item.UpdatedAt;
+                results.Add(customer);
+            }
+            return TypedResults.Ok(results);
         }
     }
 }
