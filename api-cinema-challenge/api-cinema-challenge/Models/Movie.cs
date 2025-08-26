@@ -14,7 +14,6 @@ namespace api_cinema_challenge.Models
         public int RuntimeMins { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
-        [ForeignKey("screenings")]
         public ICollection<Screening> Screenings { get; set; } = new List<Screening>(); 
 
     }

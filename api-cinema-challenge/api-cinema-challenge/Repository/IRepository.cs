@@ -13,5 +13,7 @@ namespace api_cinema_challenge.Repository
         public Task<Movie> CreateMovie(MoviePost movie);
         public Task<Movie> UpdateMovie(int id, MoviePut movie);
         public Task<Movie> DeleteMovie(int id);
+        public Task<IEnumerable<Screening>> GetScreenings(int movieId);
+        public Task<Screening> CreateScreening(int movieId, ScreeningPost screening);
     }
 }

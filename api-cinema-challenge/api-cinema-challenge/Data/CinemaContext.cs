@@ -32,9 +32,17 @@ namespace api_cinema_challenge.Data
             movies.Add(new Movie {Id = 2, Title = "Dune: Part 3", Rating = "PG-100", Description = "Spice", RuntimeMins = 158, CreatedAt = new DateTime(2025, 08, 25, 10, 00, 00, 00, DateTimeKind.Utc), UpdatedAt = new DateTime(2025, 08, 25, 10, 00, 00, 00, DateTimeKind.Utc) });
             movies.Add(new Movie { Id = 3, Title = "Return of the King", Rating = "PG-18", Description = "Epic", RuntimeMins = 240, CreatedAt = new DateTime(2025, 08, 25, 10, 00, 00, 00, DateTimeKind.Utc), UpdatedAt = new DateTime(2025, 08, 25, 10, 00, 00, 00, DateTimeKind.Utc) });
             modelBuilder.Entity<Movie>().HasData(movies);
+
+            List<Screening> screenings = new List<Screening>();
+            screenings.Add(new Screening {Id = 1, MovieId = 2, ScreenNumber=1, Capacity=100, StartsAt = new DateTime(2025, 08, 25, 10, 00, 00, 00, DateTimeKind.Utc), CreatedAt = new DateTime(2025, 08, 25, 10, 00, 00, 00, DateTimeKind.Utc), UpdatedAt = new DateTime(2025, 08, 25, 10, 00, 00, 00, DateTimeKind.Utc) });
+            screenings.Add(new Screening {Id = 2, MovieId = 2, ScreenNumber=2, Capacity=150, StartsAt = new DateTime(2025, 08, 25, 10, 00, 00, 00, DateTimeKind.Utc), CreatedAt = new DateTime(2025, 08, 25, 10, 00, 00, 00, DateTimeKind.Utc), UpdatedAt = new DateTime(2025, 08, 25, 10, 00, 00, 00, DateTimeKind.Utc) });
+            screenings.Add(new Screening { Id = 3, MovieId = 3, ScreenNumber = 3, Capacity = 60, StartsAt = new DateTime(2025, 08, 25, 10, 00, 00, 00, DateTimeKind.Utc), CreatedAt = new DateTime(2025, 08, 25, 10, 00, 00, 00, DateTimeKind.Utc), UpdatedAt = new DateTime(2025, 08, 25, 10, 00, 00, 00, DateTimeKind.Utc) });
+            screenings.Add(new Screening { Id = 4, MovieId = 1, ScreenNumber = 4, Capacity = 700, StartsAt = new DateTime(2025, 08, 25, 10, 00, 00, 00, DateTimeKind.Utc), CreatedAt = new DateTime(2025, 08, 25, 10, 00, 00, 00, DateTimeKind.Utc), UpdatedAt = new DateTime(2025, 08, 25, 10, 00, 00, 00, DateTimeKind.Utc) });
+            modelBuilder.Entity<Screening>().HasData(screenings);
         }
 
         public DbSet<Customer> Customers { get; set; }
         public DbSet<Movie> Movies { get; set; }
+        public DbSet<Screening> Screenings { get; set; }
     }
 }

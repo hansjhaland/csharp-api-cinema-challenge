@@ -30,6 +30,14 @@ namespace api_cinema_challenge.Repository
             return newMovie;
         }
 
+        public async Task<Screening> CreateScreening(int movieId, ScreeningPost screening)
+        {
+            var newScreening = ScreeningFactory.NewScreening(movieId, screening);
+            await _databaseContext.Screenings.AddAsync(newScreening);
+            await _databaseContext.SaveChangesAsync();
+            return newScreening;
+        }
+
         public async Task<Customer> DeleteCustomer(int id)
         {
             var customer = await _databaseContext.Customers.Where(x => x.Id == id).FirstOrDefaultAsync();
@@ -56,6 +64,13 @@ namespace api_cinema_challenge.Repository
         public async Task<IEnumerable<Movie>> GetMovies()
         {
             return await _databaseContext.Movies.ToListAsync();
+        }
+
+        public async Task<IEnumerable<Screening>> GetScreenings(int movieId)
+        {
+            var movie = await _databaseContext.Movies.Where(m => m.Id == movieId).Include(m => m.Screenings).FirstOrDefaultAsync();
+            if (movie == null) return null;
+            return movie.Screenings;
         }
 
         public async Task<Customer> UpdateCustomer(int id, CustomerPut customerPut)

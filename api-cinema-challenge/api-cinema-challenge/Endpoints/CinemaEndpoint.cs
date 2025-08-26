@@ -20,11 +20,28 @@ namespace api_cinema_challenge.Endpoints
             app.MapPut("/movies/{id}", UpdateMovie);
             app.MapDelete("/movies/{id}", DeleteMovie);
 
-            //app.MapGet("/movies/{id}/screenings");
-            //app.MapPost("/movies/{id}/screenings");
-            //app.MapPut("/movies/{id}/screenings");
-            //app.MapDelete("/movies/{id}/screenings");
+            app.MapGet("/movies/{movieId}/screenings", GetScreenings);
+            app.MapPost("/movies/{movieId}/screenings", CreateScreening);
 
+        }
+
+        private static async Task<IResult> CreateScreening(IRepository repository, int movieId, ScreeningPost screeningPost)
+        {
+            var entity = await repository.CreateScreening(movieId, screeningPost);
+            if (entity == null) return TypedResults.BadRequest();
+            ScreeningGet result = ScreeningFactory.NewScreeningGet(entity);
+            return TypedResults.Created($"movies/{movieId}/screenings/{entity.Id}", result);
+        }
+
+        private static async Task<IResult> GetScreenings(IRepository repository, int movieId)
+        {
+            var response = await repository.GetScreenings(movieId);
+            List<ScreeningGet> results = new List<ScreeningGet>();
+            foreach (var item in response)
+            {
+                results.Add(ScreeningFactory.NewScreeningGet(item));
+            }
+            return TypedResults.Ok(results);
         }
 
         private static async Task<IResult> DeleteMovie(IRepository repository, int id)
