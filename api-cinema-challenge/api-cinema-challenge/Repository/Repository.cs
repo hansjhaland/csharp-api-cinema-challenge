@@ -2,6 +2,7 @@
 using api_cinema_challenge.Data;
 using api_cinema_challenge.DTOs;
 using api_cinema_challenge.Models;
+using api_cinema_challenge.DataModels;
 
 namespace api_cinema_challenge.Repository
 {

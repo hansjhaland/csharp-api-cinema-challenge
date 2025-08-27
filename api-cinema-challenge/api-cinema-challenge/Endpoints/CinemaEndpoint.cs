@@ -1,6 +1,7 @@
 ﻿using api_cinema_challenge.DTOs;
 using api_cinema_challenge.Models;
 using api_cinema_challenge.Repository;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.DataProtection.Repositories;
 using System.Runtime.CompilerServices;
 
@@ -25,6 +26,7 @@ namespace api_cinema_challenge.Endpoints
 
         }
 
+        [Authorize]
         private static async Task<IResult> CreateScreening(IRepository repository, int movieId, ScreeningPost screeningPost)
         {
             var entity = await repository.CreateScreening(movieId, screeningPost);
@@ -32,7 +34,7 @@ namespace api_cinema_challenge.Endpoints
             ScreeningGet result = ScreeningFactory.NewScreeningGet(entity);
             return TypedResults.Created($"movies/{movieId}/screenings/{entity.Id}", result);
         }
-
+        [Authorize]
         private static async Task<IResult> GetScreenings(IRepository repository, int movieId)
         {
             var response = await repository.GetScreenings(movieId);
@@ -43,19 +45,19 @@ namespace api_cinema_challenge.Endpoints
             }
             return TypedResults.Ok(results);
         }
-
+        [Authorize]
         private static async Task<IResult> DeleteMovie(IRepository repository, int id)
         {
             var entity = await repository.DeleteMovie(id);
             return TypedResults.Ok(entity);
         }
-
+        [Authorize]
         private static async Task<IResult> UpdateMovie(IRepository repository, int id, MoviePut movie)
         {
             var entity = await repository.UpdateMovie(id, movie);
             return TypedResults.Created($"/customers/{id}", entity);
         }
-
+        [Authorize]
         private static async Task<IResult> CreateMovie(IRepository repository, MoviePost movie)
         {
             var entity = await repository.CreateMovie(movie);
@@ -63,7 +65,7 @@ namespace api_cinema_challenge.Endpoints
             MovieGet result = MovieFactory.NewMovieGet(entity);
             return TypedResults.Created($"/movies/{entity.Id}", result);
         }
-
+        [Authorize]
         private static async Task<IResult> GetMovies(IRepository repository)
         {
             var response = await repository.GetMovies();
@@ -74,19 +76,19 @@ namespace api_cinema_challenge.Endpoints
             }
             return TypedResults.Ok(results);
         }
-
+        [Authorize]
         private static async Task<IResult> DeleteCustomer(IRepository repository, int id)
         {
             var entity = await repository.DeleteCustomer(id);
             return TypedResults.Ok(entity);
         }
-
+        [Authorize]
         private static async Task<IResult> UpdateCustomer(IRepository repository, int id, CustomerPut customer)
         {
             var entity = await repository.UpdateCustomer(id, customer);
             return TypedResults.Created($"/customers/{id}", entity);
         }
-
+        [Authorize]
         private static async Task<IResult> CreateCustomer(IRepository repository, CustomerPost customer)
         {
             var entity = await repository.CreateCustomer(customer);
@@ -102,7 +104,7 @@ namespace api_cinema_challenge.Endpoints
             };
             return TypedResults.Created($"/customers/{entity.Id}", result);
         }
-
+        [Authorize]
         private static async Task<IResult> GetCustomers(IRepository repository)
         {
             var response = await repository.GetCustomers();

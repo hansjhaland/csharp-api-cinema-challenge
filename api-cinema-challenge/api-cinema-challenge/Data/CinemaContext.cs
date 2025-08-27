@@ -1,10 +1,13 @@
-﻿using api_cinema_challenge.Models;
+﻿using api_cinema_challenge.DataModels;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using api_cinema_challenge.Models;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 using Newtonsoft.Json.Linq;
 
 namespace api_cinema_challenge.Data
 {
-    public class CinemaContext : DbContext
+    public class CinemaContext : IdentityUserContext<ApplicationUser>
     {
         private string _connectionString;
         public CinemaContext(DbContextOptions<CinemaContext> options) : base(options)
